@@ -88,8 +88,9 @@ for i, tweet in enumerate(tweets_to_predict):
         predictions = predict(model, csv_loader)
         predictions = [int(pred) for pred in predictions]
         for pred_idx, pred in enumerate(predictions):
+            relevance = "relevant" if pred == 1 else "irrelevant"
             curr_d = curr_batch[pred_idx]
-            tweet_col.update_one({"_id": curr_d["_id"]}, {"$set": {"municipal_relevant": pred}})
+            tweet_col.update_one({"_id": curr_d["_id"]}, {"$set": {"municipal_relevant": relevance}})
 
         curr_batch = []
 
@@ -100,7 +101,8 @@ if len(curr_batch) != 0:
     predictions = predict(model, csv_loader)
     predictions = [int(pred) for pred in predictions]
     for pred_idx, pred in enumerate(predictions):
+        relevance = "relevant" if pred == 1 else "irrelevant"
         curr_d = curr_batch[pred_idx]
-        tweet_col.update_one({"_id": curr_d["_id"]}, {"$set": {"municipal_relevant": pred}})
+        tweet_col.update_one({"_id": curr_d["_id"]}, {"$set": {"municipal_relevant": relevance}})
 
 
