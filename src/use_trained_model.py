@@ -5,7 +5,9 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from torch.utils.data import DataLoader, Dataset
 import dateutil
 from torch.nn import DataParallel
-# Connect to MongoDB
+
+
+#MONGODB 
 batch_size = 1024
 max_seq_length = 512
 device = torch.device("cuda")
@@ -20,7 +22,7 @@ tweet_count = tweet_col.count_documents(query)
 print(f"Number of tweets: {tweet_count}")
 tweets_to_predict = tweet_col.find(query, ["_id", "text"])
 
-model_path = '/home/itopcu/municipal_best_model.pth'
+model_path = '/home/itopcu/twitter_municipality_relevant/models/best_models/municipal_best_model.pth'
 tokenizer_path = 'dbmdz/bert-base-turkish-128k-cased'
 model = AutoModelForSequenceClassification.from_pretrained(tokenizer_path, num_labels=1)
 model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
@@ -30,9 +32,6 @@ if torch.cuda.device_count() > 1:
 
 model.to(device)
 model.eval()
-
-#model.to(device)
-#model.eval()
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
 
 
