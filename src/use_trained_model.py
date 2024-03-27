@@ -16,7 +16,7 @@ db = mongo_client["politus_twitter"]
 tweet_col = db["tweets"]
 start_date = dateutil.parser.parse("01-01-2023", dayfirst=True)
 end_date = dateutil.parser.parse("31-12-2023", dayfirst=True)
-query = {"scrape":True}
+query = {"scrape":True, "municipal_relevant":{"$exists":False}}
 print("Counting number of tweets...")
 tweet_count = tweet_col.count_documents(query)
 print(f"Number of tweets: {tweet_count}")
